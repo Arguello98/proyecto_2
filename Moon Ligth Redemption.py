@@ -12,6 +12,7 @@ Font_tutulo = pygame.font.Font("8-BIT WONDER.TTF", 20)
 Titulo = Font_tutulo.render("Moon light Redemption", 0, (255, 255, 255))
 label_font = pygame.font.Font("8-BIT WONDER.TTF", 10)
 label_user = label_font.render("Write your name", 0, (255, 255, 255))
+
 def draw_text(txt, color, x, y, font = Font_tutulo):
     text_obj = font.render(txt, 1, color)
     screen.blit(text_obj, (x - text_obj.get_width() // 2, y))
@@ -95,7 +96,5 @@ def menu():
         screen.blit(bg, [-20, -200])
         screen.blit(Titulo, (50, 50))
         screen.blit(label_user, (90,105))
-        pygame.display.update()
-
 
 menu()
