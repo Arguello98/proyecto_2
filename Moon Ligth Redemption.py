@@ -82,6 +82,12 @@ def menu():
                         User = User[:-1]
                     elif len(User) < 15:
                         User += event.unicode
+
+        #-----------------drwaw--------------------------#
+        screen.blit(bg, [-20, -200])
+        screen.blit(Titulo, (50, 50))
+        screen.blit(label_user, (90,105))
+
         pygame.draw.rect(screen, (255, 0, 0), button_Easy)
         pygame.draw.rect(screen, (255, 0, 0), button_Medium)
         pygame.draw.rect(screen, (255, 0, 0), button_Hard)
@@ -91,10 +97,8 @@ def menu():
             pygame.draw.rect(screen, (255, 255, 255), Textbox)
         else:
             pygame.draw.rect(screen, (255, 0, 0), Textbox)
-        draw_text(User, (0, 0, 0), 450, 450)
+        draw_text(User, (0, 0, 0), 335, 100)
         pygame.display.update()
-        screen.blit(bg, [-20, -200])
-        screen.blit(Titulo, (50, 50))
-        screen.blit(label_user, (90,105))
+        
 
 menu()
