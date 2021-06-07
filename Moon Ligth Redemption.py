@@ -107,10 +107,10 @@ def menu():
 
         #-----------------drwaw--------------------------#
 
-
+        screen.blit(Backgrounds[Niveles], [0, 0])
         draw_text("Moon light Redemption",(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
         450,50)
-        screen.blit(Backgrounds[Niveles], [0, 0])
+        
 
         screen.blit(label_user, (450-150//2-150-75,160))
 
