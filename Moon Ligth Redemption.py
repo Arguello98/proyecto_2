@@ -9,7 +9,14 @@ clock = pygame.time.Clock()
 
 # se configura el bg dentro de la pantalla de juego
 
-#bg = pygame.image.load("Imagenes/Background.jpg").convert()
+Niveles = 0
+
+BgMenu = pygame.image.load("Imagenes/BgMenu.jpg").convert()
+BgL1 = pygame.image.load("Imagenes/Bglevel1.jpg").convert()
+Bgl2 = pygame.image.load("Imagenes/BgLevel2.jpg").convert()
+BgL3 = pygame.image.load("Imagenes/Bglevel3.jpg").convert()
+
+Backgrounds = [BgMenu, BgL1, Bgl2, BgL3]
 
 Font_tutulo = pygame.font.Font("8-BIT WONDER.TTF", 40)
 Titulo = Font_tutulo.render("Moon light Redemption", 0, (255, 255, 255))
@@ -22,6 +29,8 @@ def draw_text(txt, color, x, y, font = Font_tutulo):
 
 def menu():
 
+    global Niveles
+    Niveles = 0
 
     Textbox = pygame.Rect(450+10,150, 300, 50)
     button_play = pygame.Rect(450-300//2,450,300,50)
@@ -40,6 +49,8 @@ def menu():
 
     while True:
 
+        Niveles = 0
+
         clock.tick(60)
         cursor_x , cursor_y =  pygame.mouse.get_pos()
 
@@ -52,14 +63,17 @@ def menu():
         if button_Easy.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
                 print("Level Easy")
+                Niveles =  1
                 level()
         if button_Medium.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
                 print("Level Madium")
+                Niveles = 2
                 level()
         if button_Hard.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
                 print("Level Hard")
+                Niveles = 3
                 level()
         if button_Credits.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
@@ -91,7 +105,7 @@ def menu():
         #-----------------drwaw--------------------------#
 
        # screen.blit(bg, [-20, -200])
-        screen.fill((0,0,0))
+        screen.blit(Backgrounds[Niveles], [0, 0])
         screen.blit(Titulo, (50, 50))
         screen.blit(label_user, (450-150//2-150-75,160))
 
@@ -114,7 +128,7 @@ def menu():
 
 def level():
 
-
+    global Niveles
     #------------Barra superior----------------#
     BarraSuperior = pygame.Rect(0,0, 900, 50)
     ButtonExit = pygame.Rect(450-130//2,5,130,40)
@@ -127,17 +141,17 @@ def level():
     LabelTime = Fuente_complementaria.render("TIME:", 0, (0, 0, 0))
     LabelLives = Fuente_complementaria.render("LIVES:", 0, (0, 0, 0))
 
-    level_1 = False
+    levels = False
     mouse_click = False
 
-    while not level_1:
+    while not levels:
         cursor_x, cursor_y = pygame.mouse.get_pos()
 
         #-------Volver a menu------#
         if ButtonExit.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
                 print("Exit")
-                menu()
+                levels = True
         mouse_click = False
 
         for event in pygame.event.get():
@@ -149,12 +163,8 @@ def level():
                     mouse_click = True
 
 
-       # screen.blit(bg, [-20, -200])
-
-        screen.fill((0,0,0))
-
         #----------draw------------#
-
+        screen.blit(Backgrounds[Niveles], [0, 0])
         pygame.draw.rect(screen, (255, 255, 255), BarraSuperior)
         pygame.draw.rect(screen, (255, 0, 0), ButtonExit)
         pygame.draw.rect(screen, (255, 255, 255), BarraProgreso)
