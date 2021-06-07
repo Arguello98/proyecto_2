@@ -1,5 +1,5 @@
 #Se importa la biblioteca que se utilizará para
-import pygame, sys
+import pygame, sys, random
 pygame.init()
 #se inicia la ventana
 
@@ -10,8 +10,9 @@ clock = pygame.time.Clock()
 # se configura el bg dentro de la pantalla de juego
 
 #bg = pygame.image.load("Imagenes/Background.jpg").convert()
-
+lives = 3
 Font_tutulo = pygame.font.Font("8-BIT WONDER.TTF", 40)
+Fuente_complementaria = pygame.font.Font("LVDCGO__.TTF", 15)
 Titulo = Font_tutulo.render("Moon light Redemption", 0, (255, 255, 255))
 label_font = pygame.font.Font("8-BIT WONDER.TTF", 20)
 label_user = label_font.render("Write your name", 0, (255, 255, 255))
@@ -39,7 +40,8 @@ def menu():
     #--------ciclo logico--------
 
     while True:
-
+        global lives
+        lives = 3
         clock.tick(60)
         cursor_x , cursor_y =  pygame.mouse.get_pos()
 
@@ -52,15 +54,15 @@ def menu():
         if button_Easy.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
                 print("Level Easy")
-                level()
+                level(1)
         if button_Medium.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
                 print("Level Madium")
-                level()
+                level(2)
         if button_Hard.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
                 print("Level Hard")
-                level()
+                level(3)
         if button_Credits.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
                 print("Credits")
@@ -112,8 +114,58 @@ def menu():
 
 
 
-def level():
+def level(nivel):
 
+    cubos = []
+    for i in range(5*nivel):
+        temporal = pygame.Rect(random.randint(10, 800),random.randint(100,500),40,40)
+        if random.randint(-5,5) > 0:
+            direccion_x = -1
+        else:
+            direccion_x = 1
+        if random.randint(-5,5)>0:
+            direccion_y = -1
+        else:
+            direccion_y = 1
+        vel_temporal_1 = random.randint(1,3*4)*  direccion_x
+        vel_temporal_2 = random.randint(1,3*4)*  direccion_y
+        cubos +=[[temporal,vel_temporal_1,vel_temporal_2]]
+    
+    def movimiento_cubos(lista):
+        for i in lista:
+            if i[0].x <= 0:
+                i[1] = random.randint(1,5)
+            if i[0].x +i[1] +50 >=900:
+                i[1] = random.randint(1,5) * -1
+            if i[0].y <= 50:
+                i[2]= random.randint(1,5)
+            if i[0].y+ i[2]+ 50>=640:
+                i[2]= random.randint(1,5)*-1
+            else:
+                i[0].x += i[1]
+                i[0].y += i[2]
+    
+    def player_move(keys_pressed):
+        VEL = 5
+        if keys_pressed[pygame.K_LEFT] and player.x - VEL > 0: #left
+            player.x -= VEL
+        if keys_pressed[pygame.K_RIGHT] and player.x +VEL + 50 < 900:#right
+            player.x += VEL
+        if keys_pressed[pygame.K_DOWN] and player.y + VEL + 50 < 640:#right
+            player.y += VEL
+        if keys_pressed[pygame.K_UP] and player.y - VEL > 50:#right
+            player.y -= VEL
+
+    def collision_check(lista,invincibility):
+        global lives
+        for i in lista:
+            if player.colliderect(i[0]) and not invincibility:
+                cubos.remove(i)
+                lives -= 1
+                print(lives)
+
+    player = pygame.Rect(450,450,50,50)
+    clock = pygame.time.Clock()
 
     #------------Barra superior----------------#
     BarraSuperior = pygame.Rect(0,0, 900, 50)
@@ -122,22 +174,27 @@ def level():
     #-------------Barra de progreso-----------#
     BarraProgreso = pygame.Rect(0,700-60, 900, 60)
     #----------------texto-------------#
-    Fuente_complementaria = pygame.font.Font("LVDCGO__.TTF", 15)
+    
     LabelScore = Fuente_complementaria.render("SCORE:", 0, (0, 0, 0))
     LabelTime = Fuente_complementaria.render("TIME:", 0, (0, 0, 0))
     LabelLives = Fuente_complementaria.render("LIVES:", 0, (0, 0, 0))
 
     level_1 = False
     mouse_click = False
-
+    invincibility = True
+    timer  = 0
+    timer_2 = 0
+    time = 60
     while not level_1:
+        clock.tick(60)
         cursor_x, cursor_y = pygame.mouse.get_pos()
+
 
         #-------Volver a menu------#
         if ButtonExit.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
                 print("Exit")
-                menu()
+                level_1 = True
         mouse_click = False
 
         for event in pygame.event.get():
@@ -148,16 +205,34 @@ def level():
                 if event.button == 1:
                     mouse_click = True
 
+        if timer >= 90:
+            timer = 90
+            invincibility = False
+        timer +=1
 
-       # screen.blit(bg, [-20, -200])
+        if timer_2 > 60:
+            timer_2 = 0
+            time -= 1
+        timer_2 += 1
+        #------------------------move-----------------------#
+        keys_pressed = pygame.key.get_pressed()
+        player_move(keys_pressed)
+        movimiento_cubos(cubos)
+        collision_check(cubos, invincibility)
+
+       # screen.blit  (bg, [-20, -200])
 
         screen.fill((0,0,0))
-
         #----------draw------------#
-
+        for i in cubos:
+            pygame.draw.rect(screen,(255,255,255),i[0])
+        pygame.draw.rect(screen,(255,0,0),player)
         pygame.draw.rect(screen, (255, 255, 255), BarraSuperior)
         pygame.draw.rect(screen, (255, 0, 0), ButtonExit)
         pygame.draw.rect(screen, (255, 255, 255), BarraProgreso)
+
+        draw_text(str(time),(0,0,0),450 + 40,665,Fuente_complementaria)
+        
         screen.blit(LabelScore, (450 - 150 // 2 - 150 - 75, 665))
         screen.blit(LabelTime, (450 - 150 // 2, 665))
         screen.blit(LabelLives, (600, 665))
@@ -166,4 +241,4 @@ def level():
 
 
 menu()
-level()
+
