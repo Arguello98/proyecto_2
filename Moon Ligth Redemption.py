@@ -37,7 +37,7 @@ def menu():
     User = " "
     active = False
 
-    #--------ciclo logico--------
+    #--------ciclo logico----------------------------------#
 
     while True:
         global lives
@@ -45,7 +45,7 @@ def menu():
         clock.tick(60)
         cursor_x , cursor_y =  pygame.mouse.get_pos()
 
-        #-----------clicks---------
+        #-----------clicks----------------------------#
 
         if mouse_click:
             active = False
@@ -74,7 +74,7 @@ def menu():
                 active = True
         mouse_click = False
 
-        #----------eventos------------
+        #----------eventos--------------------------------#
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -186,6 +186,7 @@ def level(nivel):
     timer  = 0
     timer_2 = 0
     time = 60
+
     while not level_1:
         clock.tick(60)
         cursor_x, cursor_y = pygame.mouse.get_pos()
