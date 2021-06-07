@@ -115,6 +115,7 @@ def menu():
 
 
 def level(nivel):
+    global lives
 
     cubos = []
     for i in range(5*nivel):
@@ -214,6 +215,9 @@ def level(nivel):
             timer_2 = 0
             time -= 1
         timer_2 += 1
+
+        if lives == 0:
+            level_1 = True
         #------------------------move-----------------------#
         keys_pressed = pygame.key.get_pressed()
         player_move(keys_pressed)
