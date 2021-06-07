@@ -1,5 +1,5 @@
 #Se importa la biblioteca que se utilizará para
-import pygame, sys, random
+import pygame, sys, random, os
 pygame.init()
 #se inicia la ventana
 
@@ -13,7 +13,23 @@ clock = pygame.time.Clock()
 lives = 3
 
 Niveles = 0
+hearth = pygame.transform.scale(
+    pygame.image.load(
+        os.path.join("imagenes","heart.png")
+    ),(55,50)
+)
+hearth_2 = pygame.transform.scale(
+    pygame.image.load(
+        os.path.join("imagenes","reina.jpg")
+    ),(40,40)
+)
 
+princesa = pygame.transform.scale(
+    pygame.image.load(
+        os.path.join("imagenes","princesa.png")
+    ),(50,50)
+)
+lista = [700, 755,810]
 BgMenu = pygame.image.load("Imagenes/BgMenu.jpg").convert()
 BgL1 = pygame.image.load("Imagenes/Bglevel1.jpg").convert()
 Bgl2 = pygame.image.load("Imagenes/BgLevel2.jpg").convert()
@@ -54,6 +70,7 @@ def menu():
 
     while True:
         Niveles = 0
+        lives = 3
         clock.tick(60)
         cursor_x , cursor_y =  pygame.mouse.get_pos()
 
@@ -248,8 +265,10 @@ def level(nivel):
         screen.blit(Backgrounds[Niveles], [0, 0])
         #----------draw------------#
         for i in cubos:
-            pygame.draw.rect(screen,(255,255,255),i[0])
-        pygame.draw.rect(screen,(255,0,0),player)
+            screen.blit(hearth_2,(i[0].x,i[0].y))
+            #pygame.draw.rect(screen,(255,255,255),i[0])
+        #pygame.draw.rect(screen,(0,255,0),player)
+        screen.blit(princesa,(player.x,player.y))
 
         #----------draw------------#   
         pygame.draw.rect(screen, (255, 255, 255), BarraSuperior)
@@ -261,6 +280,8 @@ def level(nivel):
         screen.blit(LabelScore, (450 - 150 // 2 - 150 - 75, 665))
         screen.blit(LabelTime, (450 - 150 // 2, 665))
         screen.blit(LabelLives, (600, 665))
+        for i in range(lives):
+            screen.blit(hearth,(lista[i],645))
 
         pygame.display.update()
 
