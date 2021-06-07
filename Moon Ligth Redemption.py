@@ -94,7 +94,9 @@ def menu():
 
        # screen.blit(bg, [-20, -200])
         screen.fill((0,0,0))
-        screen.blit(Titulo, (50, 50))
+        #screen.blit(Titulo, (50, 50))
+        draw_text("Moon light Redemption",(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
+        450,50)
         screen.blit(label_user, (450-150//2-150-75,160))
 
         pygame.draw.rect(screen,(255,0,0), button_play)
