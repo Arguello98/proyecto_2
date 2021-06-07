@@ -14,10 +14,12 @@ lives = 3
 
 Niveles = 0
 
-BgMenu = pygame.image.load("Imagenes/BgMenu.jpg").convert()
-BgL1 = pygame.image.load("Imagenes/Bglevel1.jpg").convert()
+BgMenu = pygame.image.load("Imagenes/BgMenu.png").convert()
+BgL1 = pygame.image.load("Imagenes/BgLevel1.png").convert()
 Bgl2 = pygame.image.load("Imagenes/BgLevel2.jpg").convert()
 BgL3 = pygame.image.load("Imagenes/Bglevel3.jpg").convert()
+Button_grande = pygame.image.load("Imagenes/button(2).png")
+Button_pequeno = pygame.image.load("Imagenes/button.png")
 
 Backgrounds = [BgMenu, BgL1, Bgl2, BgL3]
 
@@ -107,6 +109,7 @@ def menu():
 
         #-----------------drwaw--------------------------#
 
+
         screen.blit(Backgrounds[Niveles], [0, 0])
         draw_text("Moon light Redemption",(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
         450,50)
@@ -114,12 +117,18 @@ def menu():
 
         screen.blit(label_user, (450-150//2-150-75,160))
 
-        pygame.draw.rect(screen,(255,0,0), button_play)
-        pygame.draw.rect(screen, (255, 0, 0), button_Easy)
-        pygame.draw.rect(screen, (255, 0, 0), button_Medium)
-        pygame.draw.rect(screen, (255, 0, 0), button_Hard)
-        pygame.draw.rect(screen, (255, 0, 0), button_Instructions)
-        pygame.draw.rect(screen, (255, 0, 0), button_Credits)
+        #pygame.draw.rect(screen,(255,0,0), button_play)
+        screen.blit(Button_grande,[450-300//2,450])
+        #pygame.draw.rect(screen, (255, 0, 0), button_Easy)
+        screen.blit(Button_pequeno, (450-150//2-150-75,300))
+        #pygame.draw.rect(screen, (255, 0, 0), button_Medium)
+        screen.blit(Button_pequeno, (450-150//2,300))
+        #pygame.draw.rect(screen, (255, 0, 0), button_Hard)
+        screen.blit(Button_pequeno, (600,300))
+        #pygame.draw.rect(screen, (255, 0, 0), button_Instructions)
+        screen.blit(Button_grande, [450-300-10, 600])
+        #pygame.draw.rect(screen, (255, 0, 0), button_Credits)
+        screen.blit(Button_grande, (450 + 10, 600))
         if active:
             pygame.draw.rect(screen, (255, 255, 255), Textbox)
         else:
@@ -242,8 +251,6 @@ def level(nivel):
         player_move(keys_pressed)
         movimiento_cubos(cubos)
         collision_check(cubos, invincibility)
-
-       # screen.blit  (bg, [-20, -200])
 
         screen.blit(Backgrounds[Niveles], [0, 0])
         #----------draw------------#
