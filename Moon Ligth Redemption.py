@@ -25,11 +25,22 @@ Backgrounds = [BgMenu, BgL1, Bgl2, BgL3]
 
 Font_tutulo = pygame.font.Font("8-BIT WONDER.TTF", 40)
 Fuente_complementaria = pygame.font.Font("LVDCGO__.TTF", 15)
-Titulo = Font_tutulo.render("Moon light Redemption", 0, (255, 255, 255))
+Titulo = Font_tutulo.render("Moon light Redemption",0, (255, 255, 255))
 label_font = pygame.font.Font("8-BIT WONDER.TTF", 20)
 label_user = label_font.render("Write your name", 0, (255, 255, 255))
+Font_botones = pygame.font.Font("8-BIT WONDER.TTF", 15)
 
 def draw_text(txt, color, x, y, font = Font_tutulo):
+
+    text_obj = font.render(txt, 1, color)
+    screen.blit(text_obj, (x - text_obj.get_width() // 2, y))
+
+def draw_complementos(txt, color, x, y, font = label_font):
+    text_obj = font.render(txt, 1, color)
+    screen.blit(text_obj, (x - text_obj.get_width() // 2, y))
+
+def draw_botones(txt, color, x, y, font = Font_botones):
+    text_obj = font.render(txt, 1, color)
     text_obj = font.render(txt, 1, color)
     screen.blit(text_obj, (x - text_obj.get_width() // 2, y))
 
@@ -83,9 +94,11 @@ def menu():
         if button_Credits.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
                 print("Credits")
+                Creditos()
         if button_Instructions.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
                 print("Instructions")
+                Instructions()
         if Textbox.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
                 active = True
@@ -111,11 +124,10 @@ def menu():
 
 
         screen.blit(Backgrounds[Niveles], [0, 0])
+        #-------------------------texto principal------------------------#
         draw_text("Moon light Redemption",(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
         450,50)
-        
-
-        screen.blit(label_user, (450-150//2-150-75,160))
+        draw_complementos("Write Your name ", (random.randint(0,255),random.randint(0,255),random.randint(0,255)), 300,160)
 
         #pygame.draw.rect(screen,(255,0,0), button_play)
         screen.blit(Button_grande,[450-300//2,450])
@@ -136,7 +148,80 @@ def menu():
 
             #Texto escrito por el usuario
         draw_text(User, (0,0,0), 600,160 , label_font)
+
+        # -------------------Texto de los botones------------------------#
+        draw_complementos("Play", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 900 // 2,462)
+        draw_complementos("Instructions", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 290, 615)
+        draw_complementos("Cedrits", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)),610, 615)
+        draw_botones("Easy",  (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 225, 315)
+        draw_botones("Medium", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 450, 315)
+        draw_botones("Hard", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 675, 315)
+
         pygame.display.update()
+
+
+def Creditos():
+
+    ButtonExit = pygame.Rect(450 - 130 // 2, 5, 130, 40)
+    mouse_click = False
+    while True:
+        clock.tick(60)
+        cursor_x, cursor_y = pygame.mouse.get_pos()
+
+
+        #-------Volver a menu------#
+        if ButtonExit.collidepoint((cursor_x, cursor_y)):
+            if mouse_click:
+                print("Exit")
+                menu()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    mouse_click = True
+
+        screen.blit(Backgrounds[0], [0, 0])
+        #-------------------------texto principal------------------------#
+        draw_text("Credits",(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
+        450,50)
+        screen.blit(Button_pequeno, (450 - 130 // 2, 2))
+        pygame.display.update()
+
+
+def Instructions():
+
+    ButtonExit = pygame.Rect(450 - 130 // 2, 5, 130, 40)
+    mouse_click = False
+
+    while True:
+        clock.tick(60)
+        cursor_x, cursor_y = pygame.mouse.get_pos()
+
+
+        #-------Volver a menu------#
+        if ButtonExit.collidepoint((cursor_x, cursor_y)):
+            if mouse_click:
+                print("Exit")
+                menu()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    mouse_click = True
+
+        screen.blit(Backgrounds[0], [0, 0])
+        #-------------------------texto principal------------------------#
+        draw_text("Instructions",(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
+        450,50)
+        screen.blit(Button_pequeno, (450 - 130 // 2, 2))
+        pygame.display.update()
+
 
 
 
@@ -154,8 +239,8 @@ def level(nivel):
             direccion_y = -1
         else:
             direccion_y = 1
-        vel_temporal_1 = random.randint(1,3*4)*  direccion_x
-        vel_temporal_2 = random.randint(1,3*4)*  direccion_y
+        vel_temporal_1 = random.randint(1,3*4) * direccion_x
+        vel_temporal_2 = random.randint(1,3*4) * direccion_y
         cubos +=[[temporal,vel_temporal_1,vel_temporal_2]]
     
     def movimiento_cubos(lista):
@@ -209,7 +294,7 @@ def level(nivel):
     levels = False
     mouse_click = False
     invincibility = True
-    timer  = 0
+    timer = 0
     timer_2 = 0
     time = 60
 
@@ -217,7 +302,6 @@ def level(nivel):
     while not levels:
         clock.tick(60)
         cursor_x, cursor_y = pygame.mouse.get_pos()
-
 
         #-------Volver a menu------#
         if ButtonExit.collidepoint((cursor_x, cursor_y)):
@@ -259,9 +343,11 @@ def level(nivel):
         pygame.draw.rect(screen,(255,0,0),player)
 
         #----------draw------------#   
-        pygame.draw.rect(screen, (255, 255, 255), BarraSuperior)
-        pygame.draw.rect(screen, (255, 0, 0), ButtonExit)
-        pygame.draw.rect(screen, (255, 255, 255), BarraProgreso)
+       # pygame.draw.rect(screen, (255, 255, 255), BarraSuperior)
+        #pygame.draw.rect(screen, (255, 0, 0), ButtonExit)
+        screen.blit(Button_pequeno, (450-130//2,2))
+        #pygame.draw.rect(screen, (255, 255, 255), BarraProgreso)
+
 
         draw_text(str(time),(0,0,0),450 + 40,665,Fuente_complementaria)
         
