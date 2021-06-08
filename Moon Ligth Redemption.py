@@ -50,9 +50,6 @@ def draw_text(txt, color, x, y, font = Font_tutulo):
 def menu():
 
     global Niveles, lives
-    lives = 3
-    
-
     Textbox = pygame.Rect(450+10,150, 300, 50)
     button_play = pygame.Rect(450-300//2,450,300,50)
     button_Easy = pygame.Rect(450-150//2-150-75,300,150,50)
@@ -162,20 +159,24 @@ def level(nivel):
             direccion_y = -1
         else:
             direccion_y = 1
-        vel_temporal_1 = random.randint(1,3*4)*  direccion_x
-        vel_temporal_2 = random.randint(1,3*4)*  direccion_y
+        vel_temporal_1 = random.randint(1,5)*  direccion_x
+        vel_temporal_2 = random.randint(1,5)*  direccion_y
         cubos +=[[temporal,vel_temporal_1,vel_temporal_2]]
     
     def movimiento_cubos(lista):
         for i in lista:
             if i[0].x <= 0:
                 i[1] = random.randint(1,5)
+                i[2] = random.randint(-5,5)
             if i[0].x +i[1] +50 >=900:
                 i[1] = random.randint(1,5) * -1
+                i[2] = random.randint(-5,5)
             if i[0].y <= 50:
                 i[2]= random.randint(1,5)
+                i[1] = random.randint(-5,5)
             if i[0].y+ i[2]+ 50>=640:
                 i[2]= random.randint(1,5)*-1
+                i[1] = random.randint(-5,5)
             else:
                 i[0].x += i[1]
                 i[0].y += i[2]
@@ -253,7 +254,7 @@ def level(nivel):
         timer_2 += 1
 
         if lives == 0:
-            level_1 = True
+            levels = True
         #------------------------move-----------------------#
         keys_pressed = pygame.key.get_pressed()
         player_move(keys_pressed)
