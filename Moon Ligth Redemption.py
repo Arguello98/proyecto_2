@@ -20,6 +20,8 @@ Bgl2 = pygame.image.load("Imagenes/BgLevel2.jpg").convert()
 BgL3 = pygame.image.load("Imagenes/Bglevel3.jpg").convert()
 Button_grande = pygame.image.load("Imagenes/button(2).png")
 Button_pequeno = pygame.image.load("Imagenes/button.png")
+Icono_vida  = pygame.image.load("Imagenes/Icono_vida.png")
+Icono_sonido = pygame.image.load("Imagenes/Icono_Sonido.png")
 
 Backgrounds = [BgMenu, BgL1, Bgl2, BgL3]
 
@@ -51,7 +53,8 @@ def menu():
     
 
     Textbox = pygame.Rect(450+10,150, 300, 50)
-    button_play = pygame.Rect(450-300//2,450,300,50)
+    button_play = pygame.Rect(450-300//2,375,300,50)
+    Button_Score = pygame.Rect(450-300//2,450,300,50)
     button_Easy = pygame.Rect(450-150//2-150-75,300,150,50)
     button_Medium = pygame.Rect(450-150//2,300,150,50)
     button_Hard = pygame.Rect(600,300,150,50)
@@ -76,10 +79,15 @@ def menu():
             active = False
         if mouse_click:
             active = False
+        if button_play.collidepoint((cursor_x, cursor_y)):
+            if mouse_click:
+                print("Historia :v")
+                Niveles = 1
+                level(Niveles)
         if button_Easy.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
                 print("Level Easy")
-                Niveles =  1
+                Niveles = 1
                 level(Niveles)
         if button_Medium.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
@@ -99,6 +107,10 @@ def menu():
             if mouse_click:
                 print("Instructions")
                 Instructions()
+        if Button_Score.collidepoint((cursor_x, cursor_y)):
+            if mouse_click:
+                print("Best Scores")
+                Best_Score_Screen()
         if Textbox.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
                 active = True
@@ -129,8 +141,11 @@ def menu():
         450,50)
         draw_complementos("Write Your name ", (random.randint(0,255),random.randint(0,255),random.randint(0,255)), 300,160)
 
+
         #pygame.draw.rect(screen,(255,0,0), button_play)
-        screen.blit(Button_grande,[450-300//2,450])
+        screen.blit(Button_grande,[450-300//2,375])
+        #pygame.draw.rect(screen, (255, 0, 0), Button_Score)
+        screen.blit(Button_grande, [450 - 300 // 2, 450])
         #pygame.draw.rect(screen, (255, 0, 0), button_Easy)
         screen.blit(Button_pequeno, (450-150//2-150-75,300))
         #pygame.draw.rect(screen, (255, 0, 0), button_Medium)
@@ -150,9 +165,10 @@ def menu():
         draw_text(User, (0,0,0), 600,160 , label_font)
 
         # -------------------Texto de los botones------------------------#
-        draw_complementos("Play", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 900 // 2,462)
+        draw_complementos("Play", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 900 // 2,387)
+        draw_complementos("Best Score", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 900 // 2,463)
         draw_complementos("Instructions", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 290, 615)
-        draw_complementos("Cedrits", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)),610, 615)
+        draw_complementos("Credits", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)),610, 615)
         draw_botones("Easy",  (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 225, 315)
         draw_botones("Medium", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 450, 315)
         draw_botones("Hard", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 675, 315)
@@ -162,7 +178,7 @@ def menu():
 
 def Creditos():
 
-    ButtonExit = pygame.Rect(450 - 130 // 2, 5, 130, 40)
+    ButtonExit = pygame.Rect(450 - 130 // 2, 650, 130, 40)
     mouse_click = False
     while True:
         clock.tick(60)
@@ -187,13 +203,24 @@ def Creditos():
         #-------------------------texto principal------------------------#
         draw_text("Credits",(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
         450,50)
-        screen.blit(Button_pequeno, (450 - 130 // 2, 2))
+        #pygame.draw.rect(screen, (255, 0, 0), ButtonExit)
+        screen.blit(Button_pequeno, (375, 640))
+        draw_complementos("Exit", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 453, 653)
+        #---------------------------Creditos---------------------------------#
+        draw_complementos("Costa Rica",(255,255,255),450,150)
+        draw_complementos("Instituto tecnologico de Costa Rica",(255,255,255), 450,200)
+        draw_complementos("Ingenieria en Computadores",(255,255,255),450, 250)
+        draw_complementos("Profesor Luis Barboza Artavia",(255,255,255), 450,300)
+        draw_complementos("Taller de programacion" ,(255,255,255),450,350)
+        draw_complementos("Daniel Arguello Poma e Isac Marin Sirias",(255,255,255),450,400)
+        draw_complementos("Version X", (255,255,255),450,450)
+        draw_complementos("2021", (0,0,0),450 + 200,550)
+        draw_complementos("Grupo 4", (0,0,0),450//2,550)
         pygame.display.update()
-
 
 def Instructions():
 
-    ButtonExit = pygame.Rect(450 - 130 // 2, 5, 130, 40)
+    ButtonExit = pygame.Rect(450 - 130 // 2, 650, 130, 40)
     mouse_click = False
 
     while True:
@@ -219,8 +246,46 @@ def Instructions():
         #-------------------------texto principal------------------------#
         draw_text("Instructions",(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
         450,50)
-        screen.blit(Button_pequeno, (450 - 130 // 2, 2))
+        #pygame.draw.rect(screen, (255, 0, 0), ButtonExit)
+        screen.blit(Button_pequeno, (375, 640))
+        draw_complementos("Exit", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 453, 653)
+
         pygame.display.update()
+
+def Best_Score_Screen():
+
+    ButtonExit = pygame.Rect(450 - 130 // 2, 650, 130, 40)
+    mouse_click = False
+
+    while True:
+        clock.tick(60)
+        cursor_x, cursor_y = pygame.mouse.get_pos()
+
+
+        #-------Volver a menu------#
+        if ButtonExit.collidepoint((cursor_x, cursor_y)):
+            if mouse_click:
+                print("Exit")
+                menu()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    mouse_click = True
+
+        screen.blit(Backgrounds[0], [0, 0])
+        #-------------------------texto principal------------------------#
+        draw_text("Best Scores",(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
+        450,50)
+        #pygame.draw.rect(screen, (255, 0, 0), ButtonExit)
+        screen.blit(Button_pequeno, (375, 640))
+        draw_complementos("Exit", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 453, 653)
+
+        pygame.display.update()
+
 
 
 
@@ -290,6 +355,10 @@ def level(nivel):
     LabelScore = Fuente_complementaria.render("SCORE:", 0, (0, 0, 0))
     LabelTime = Fuente_complementaria.render("TIME:", 0, (0, 0, 0))
     LabelLives = Fuente_complementaria.render("LIVES:", 0, (0, 0, 0))
+    Vida1 = pygame.Rect(715,650, 40,40)
+    Vida2 = pygame.Rect(775,650, 40,40)
+    Vida3 = pygame.Rect(835,650, 40,40)
+    Sound = pygame.Rect(15,10, 30,23)
 
     levels = False
     mouse_click = False
@@ -343,9 +412,19 @@ def level(nivel):
         pygame.draw.rect(screen,(255,0,0),player)
 
         #----------draw------------#   
-       # pygame.draw.rect(screen, (255, 255, 255), BarraSuperior)
+        #pygame.draw.rect(screen, (255, 255, 255), BarraSuperior)
         #pygame.draw.rect(screen, (255, 0, 0), ButtonExit)
         screen.blit(Button_pequeno, (450-130//2,2))
+        draw_complementos("Exit", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 460, 15)
+
+        #pygame.draw.rect(screen,(255,255,255), Sound)
+        screen.blit(Icono_sonido, (15,10))
+        #pygame.draw.rect(screen, (255, 255, 255), Vida1)
+        screen.blit(Icono_vida, (715,650))
+        #pygame.draw.rect(screen, (255, 255, 255), Vida2)
+        screen.blit(Icono_vida, (775,650))
+        #pygame.draw.rect(screen, (255, 255, 255), Vida3)
+        screen.blit(Icono_vida, (835,650))
         #pygame.draw.rect(screen, (255, 255, 255), BarraProgreso)
 
 
@@ -354,7 +433,6 @@ def level(nivel):
         screen.blit(LabelScore, (450 - 150 // 2 - 150 - 75, 665))
         screen.blit(LabelTime, (450 - 150 // 2, 665))
         screen.blit(LabelLives, (600, 665))
-
         pygame.display.update()
 
 
