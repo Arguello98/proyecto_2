@@ -11,6 +11,7 @@ clock = pygame.time.Clock()
 
 #bg = pygame.image.load("Imagenes/Background.jpg").convert()
 lives = 3
+score = 0
 
 Niveles = 0
 hearth = pygame.transform.scale(
@@ -29,7 +30,7 @@ princesa = pygame.transform.scale(
         os.path.join("imagenes","princesa.png")
     ),(50,50)
 )
-lista = [700, 755,810]
+hearth_position = [700, 755,810]
 BgMenu = pygame.image.load("Imagenes/BgMenu.jpg").convert()
 BgL1 = pygame.image.load("Imagenes/Bglevel1.jpg").convert()
 Bgl2 = pygame.image.load("Imagenes/BgLevel2.jpg").convert()
@@ -49,7 +50,7 @@ def draw_text(txt, color, x, y, font = Font_tutulo):
 
 def menu():
 
-    global Niveles, lives
+    global Niveles, lives, score
     Textbox = pygame.Rect(450+10,150, 300, 50)
     button_play = pygame.Rect(450-300//2,450,300,50)
     button_Easy = pygame.Rect(450-150//2-150-75,300,150,50)
@@ -68,6 +69,7 @@ def menu():
     while True:
         Niveles = 0
         lives = 3
+        score = 0
         clock.tick(60)
         cursor_x , cursor_y =  pygame.mouse.get_pos()
 
@@ -282,7 +284,7 @@ def level(nivel):
         screen.blit(LabelTime, (450 - 150 // 2, 665))
         screen.blit(LabelLives, (600, 665))
         for i in range(lives):
-            screen.blit(hearth,(lista[i],645))
+            screen.blit(hearth,(hearth_position[i],645))
 
         pygame.display.update()
 
