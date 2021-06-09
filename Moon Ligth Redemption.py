@@ -150,20 +150,21 @@ def menu():
 def level(nivel):
     global lives
 
-    cubos = []
-    for i in range(5*nivel):
-        temporal = pygame.Rect(random.randint(10, 800),random.randint(100,500),40,40)
-        if random.randint(-5,5) > 0:
-            direccion_x = -1
-        else:
-            direccion_x = 1
-        if random.randint(-5,5)>0:
-            direccion_y = -1
-        else:
-            direccion_y = 1
-        vel_temporal_1 = random.randint(1,5)*  direccion_x
-        vel_temporal_2 = random.randint(1,5)*  direccion_y
-        cubos +=[[temporal,vel_temporal_1,vel_temporal_2]]
+    
+    def create_cubes(cubos,nivel):
+        for i in range(5*nivel):
+            temporal = pygame.Rect(random.randint(10, 800),random.randint(100,500),40,40)
+            if random.randint(-5,5) > 0:
+                direccion_x = -1
+            else:
+                direccion_x = 1
+            if random.randint(-5,5)>0:
+                direccion_y = -1
+            else:
+                direccion_y = 1
+            vel_temporal_1 = random.randint(1,5)*  direccion_x
+            vel_temporal_2 = random.randint(1,5)*  direccion_y
+            cubos +=[[temporal,vel_temporal_1,vel_temporal_2]]
     
     def movimiento_cubos(lista):
         for i in lista:
@@ -223,7 +224,9 @@ def level(nivel):
     timer  = 0
     timer_2 = 0
     time = 60
-
+    victory = False
+    cubos = []
+    create_cubes(cubos, nivel)
 
     while not levels:
         clock.tick(60)
@@ -287,6 +290,25 @@ def level(nivel):
             screen.blit(hearth,(hearth_position[i],645))
 
         pygame.display.update()
+
+        #----------------level condition---------------------------#
+        if time == 0 and nivel < 3:
+            if nivel < 3:
+                nivel += 1
+                time = 60
+                lives = 3
+                timer = 0
+                invincibility = True
+                timer_2 = 0
+
+                cubos = []
+                create_cubes(cubos, nivel)
+            else:
+                victory = True
+    if victory:
+         print ("victory_screen()")
+    else:
+        print("end_screen()")
 
 
 menu()
