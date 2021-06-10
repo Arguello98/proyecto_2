@@ -15,11 +15,6 @@ score = 0
 
 Niveles = 0
 
-hearth = pygame.transform.scale(
-    pygame.image.load(
-        os.path.join("imagenes","heart.png")
-    ),(55,50)
-)
 hearth_2 = pygame.transform.scale(
     pygame.image.load(
         os.path.join("imagenes","reina.jpg")
@@ -31,10 +26,9 @@ princesa = pygame.transform.scale(
         os.path.join("imagenes","princesa.png")
     ),(50,50)
 )
-hearth_position = [700, 755,810]
-BgMenu = pygame.image.load("Imagenes/BgMenu.jpg").convert()
-BgL1 = pygame.image.load("Imagenes/Bglevel1.jpg").convert()
-
+hearth_position = [715, 775,835]
+BgMenu = pygame.image.load("Imagenes/BgMenu.png").convert()
+BgL1 = pygame.image.load("Imagenes/Bglevel1.png").convert()
 Bgl2 = pygame.image.load("Imagenes/BgLevel2.jpg").convert()
 BgL3 = pygame.image.load("Imagenes/Bglevel3.jpg").convert()
 Button_grande = pygame.image.load("Imagenes/button(2).png")
@@ -445,22 +439,13 @@ def level(nivel):
 
         #pygame.draw.rect(screen,(255,255,255), Sound)
         screen.blit(Icono_sonido, (15,10))
-        #pygame.draw.rect(screen, (255, 255, 255), Vida1)
-        screen.blit(Icono_vida, (715,650))
-        #pygame.draw.rect(screen, (255, 255, 255), Vida2)
-        screen.blit(Icono_vida, (775,650))
-        #pygame.draw.rect(screen, (255, 255, 255), Vida3)
-        screen.blit(Icono_vida, (835,650))
-        #pygame.draw.rect(screen, (255, 255, 255), BarraProgreso)
-
-
         draw_text(str(time),(0,0,0),450 + 40,665,Fuente_complementaria)
         
         screen.blit(LabelScore, (450 - 150 // 2 - 150 - 75, 665))
         screen.blit(LabelTime, (450 - 150 // 2, 665))
         screen.blit(LabelLives, (600, 665))
         for i in range(lives):
-            screen.blit(hearth,(hearth_position[i],645))
+            screen.blit(Icono_vida,(hearth_position[i],650))
 
         pygame.display.update()
 
