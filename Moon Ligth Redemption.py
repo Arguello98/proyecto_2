@@ -303,7 +303,7 @@ def Best_Score_Screen():
 
 
 def level(nivel):
-    global lives
+    global lives,score
 
     def create_cubes(cubos,nivel):
         for i in range(5*nivel):
@@ -371,9 +371,6 @@ def level(nivel):
     LabelScore = Fuente_complementaria.render("SCORE:", 0, (0, 0, 0))
     LabelTime = Fuente_complementaria.render("TIME:", 0, (0, 0, 0))
     LabelLives = Fuente_complementaria.render("LIVES:", 0, (0, 0, 0))
-    Vida1 = pygame.Rect(715,650, 40,40)
-    Vida2 = pygame.Rect(775,650, 40,40)
-    Vida3 = pygame.Rect(835,650, 40,40)
     Sound = pygame.Rect(15,10, 30,23)
 
     levels = False
@@ -413,6 +410,12 @@ def level(nivel):
         if timer_2 > 60:
             timer_2 = 0
             time -= 1
+            if nivel ==1:
+                score += 1
+            if nivel == 2:
+                score += 3
+            if nivel == 3:
+                score += 5
         timer_2 += 1
 
         if lives == 0:
@@ -439,8 +442,8 @@ def level(nivel):
 
         #pygame.draw.rect(screen,(255,255,255), Sound)
         screen.blit(Icono_sonido, (15,10))
-        draw_text(str(time),(0,0,0),450 + 40,665,Fuente_complementaria)
-        
+        draw_text(str(time),(0,0,0),450 + 40,665,Fuente_complementaria)      
+        draw_text(str(score),(0,0,0),450 - 150 // 2 -75,665,Fuente_complementaria)
         screen.blit(LabelScore, (450 - 150 // 2 - 150 - 75, 665))
         screen.blit(LabelTime, (450 - 150 // 2, 665))
         screen.blit(LabelLives, (600, 665))
@@ -450,7 +453,7 @@ def level(nivel):
         pygame.display.update()
 
         #----------------level condition---------------------------#
-        if time == 0 and nivel < 3:
+        if time == 0:
             if nivel < 3:
                 nivel += 1
                 time = 60
@@ -463,6 +466,8 @@ def level(nivel):
                 create_cubes(cubos, nivel)
             else:
                 victory = True
+                levels = True
+    print(score)
     if victory:
          print ("victory_screen()")
     else:
