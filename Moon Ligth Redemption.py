@@ -1,6 +1,7 @@
 #Se importa la biblioteca que se utilizará para
 import pygame, sys, random, os
 pygame.init()
+pygame.mixer.init()
 #se inicia la ventana
 
 screen = pygame. display.set_mode([900,700])
@@ -15,6 +16,7 @@ score = 0
 
 Niveles = 0
 
+#-------------------------------------------imgaes----------------------------------#
 Asteroid = pygame.transform.scale(
     pygame.image.load(
         os.path.join("Imagenes/Asteroide.png")
@@ -35,8 +37,11 @@ Button_grande = pygame.image.load("Imagenes/button(2).png")
 Button_pequeno = pygame.image.load("Imagenes/button.png")
 Icono_vida  = pygame.image.load("Imagenes/Icono_vida.png")
 Icono_sonido = pygame.image.load("Imagenes/Icono_Sonido.png")
-
 Backgrounds = [BgMenu, BgL1, Bgl2, BgL3]
+
+#---------------------------music-----------------------------#
+pygame.mixer.music.load("Sneaky Driver.mp3")
+pygame.mixer.music.play(-1,0,0)
 
 Font_tutulo = pygame.font.Font("8-BIT WONDER.TTF", 40)
 Fuente_complementaria = pygame.font.Font("LVDCGO__.TTF", 15)
