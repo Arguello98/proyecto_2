@@ -43,6 +43,9 @@ Backgrounds = [BgMenu, BgL1, Bgl2, BgL3]
 pygame.mixer.music.load("Sneaky Driver.mp3")
 pygame.mixer.music.play(-1,0,0)
 
+HIT_SOUND = pygame.mixer.Sound("Grenade+1.mp3")
+
+#--------------------------------------------------------------#
 Font_tutulo = pygame.font.Font("8-BIT WONDER.TTF", 40)
 Fuente_complementaria = pygame.font.Font("LVDCGO__.TTF", 15)
 Titulo = Font_tutulo.render("Moon light Redemption",0, (255, 255, 255))
@@ -458,6 +461,7 @@ def level(nivel):
         for i in lista:
             if player.colliderect(i[0]) and not invincibility:
                 cubos.remove(i)
+                HIT_SOUND.play()
                 lives -= 1
                 print(lives)
 
