@@ -276,24 +276,21 @@ def Victory_screen():
     ButtonExit = pygame.Rect(450 - 130 // 2, 650, 130, 40)
     Button_play_again = pygame.Rect(450 - 300 // 2, 550, 300, 50)
     mouse_click = False
-
-    while True:
+    run = True
+    while run:
         clock.tick(60)
         cursor_x, cursor_y = pygame.mouse.get_pos()
 
         # ---------Jugar de nuevo--------#
         if Button_play_again.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
-                print("Historia :v")
-                Niveles = 1
-                level(Niveles)
+                run = False
             mouse_click = False
 
         #-------Volver a menu------#
         if ButtonExit.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
-                print("Exit")
-                menu()
+                run = False
             mouse_click = False
 
         for event in pygame.event.get():
@@ -324,23 +321,22 @@ def End_Screen():
     Button_play_again = pygame.Rect(450 - 300 // 2, 550, 300, 50)
     mouse_click = False
 
-    while True:
+    run = True
+
+    while run:
         clock.tick(60)
         cursor_x, cursor_y = pygame.mouse.get_pos()
 
         # ---------Jugar de nuevo--------#
         if Button_play_again.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
-                print("Historia :v")
-                Niveles = 1
-                level(Niveles)
+                run = False
             mouse_click = False
 
         # -------Volver a menu------#
         if ButtonExit.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
-                print("Exit")
-                menu()
+                run = False
             mouse_click = False
 
         for event in pygame.event.get():
@@ -571,7 +567,7 @@ def level(nivel):
        #  Victory_screen()
     else:
         print("end_screen()")
-      #  End_Screen()
+        End_Screen()
 
 menu()
 
