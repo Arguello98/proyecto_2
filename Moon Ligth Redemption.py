@@ -15,15 +15,15 @@ score = 0
 
 Niveles = 0
 
-hearth_2 = pygame.transform.scale(
+Asteroid = pygame.transform.scale(
     pygame.image.load(
-        os.path.join("imagenes","reina.jpg")
-    ),(40,40)
+        os.path.join("Imagenes/Asteroide.png")
+),(40,40)
 )
 
-princesa = pygame.transform.scale(
+SpaceShip = pygame.transform.scale(
     pygame.image.load(
-        os.path.join("imagenes","princesa.png")
+        os.path.join("Imagenes/SpaceShip.png")
     ),(50,50)
 )
 hearth_position = [715, 775,835]
@@ -44,6 +44,7 @@ Titulo = Font_tutulo.render("Moon light Redemption",0, (255, 255, 255))
 label_font = pygame.font.Font("8-BIT WONDER.TTF", 20)
 label_user = label_font.render("Write your name", 0, (255, 255, 255))
 Font_botones = pygame.font.Font("8-BIT WONDER.TTF", 15)
+Font_final_screens = pygame.font.Font("8-BIT WONDER.TTF", 55)
 
 def draw_text(txt, color, x, y, font = Font_tutulo):
 
@@ -58,6 +59,12 @@ def draw_botones(txt, color, x, y, font = Font_botones):
     text_obj = font.render(txt, 1, color)
     text_obj = font.render(txt, 1, color)
     screen.blit(text_obj, (x - text_obj.get_width() // 2, y))
+
+def draw_Final_screens (txt, color, x, y, font = Font_final_screens):
+    text_obj = font.render(txt, 1, color)
+    text_obj = font.render(txt, 1, color)
+    screen.blit(text_obj, (x - text_obj.get_width() // 2, y))
+
 
 def menu():
 
@@ -245,7 +252,7 @@ def Instructions():
             if mouse_click:
                 print("Exit")
                 menu()
-
+            mouse_click = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -263,6 +270,98 @@ def Instructions():
         draw_complementos("Exit", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 453, 653)
 
         pygame.display.update()
+
+def Victory_screen():
+
+    ButtonExit = pygame.Rect(450 - 130 // 2, 650, 130, 40)
+    Button_play_again = pygame.Rect(450 - 300 // 2, 550, 300, 50)
+    mouse_click = False
+    run = True
+    while run:
+        clock.tick(60)
+        cursor_x, cursor_y = pygame.mouse.get_pos()
+
+        # ---------Jugar de nuevo--------#
+        if Button_play_again.collidepoint((cursor_x, cursor_y)):
+            if mouse_click:
+                run = False
+            mouse_click = False
+
+        #-------Volver a menu------#
+        if ButtonExit.collidepoint((cursor_x, cursor_y)):
+            if mouse_click:
+                run = False
+            mouse_click = False
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    mouse_click = True
+
+
+        screen.blit(Backgrounds[0], [0, 0])
+        #-------------------------texto principal------------------------#
+        draw_Final_screens("Victory for you",(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
+        450,300)
+        #pygame.draw.rect(screen, (255, 0, 0), ButtonExit)
+        screen.blit(Button_pequeno, (375, 640))
+        #pygame.draw.rect(screen, (255, 0, 0), Button_play_again)
+        screen.blit(Button_grande, (300, 550))
+        draw_complementos("Exit", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 453, 653)
+        draw_complementos("Play Again", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 455, 565)
+
+        pygame.display.update()
+
+
+def End_Screen():
+    ButtonExit = pygame.Rect(450 - 130 // 2, 650, 130, 40)
+    Button_play_again = pygame.Rect(450 - 300 // 2, 550, 300, 50)
+    mouse_click = False
+
+    run = True
+
+    while run:
+        clock.tick(60)
+        cursor_x, cursor_y = pygame.mouse.get_pos()
+
+        # ---------Jugar de nuevo--------#
+        if Button_play_again.collidepoint((cursor_x, cursor_y)):
+            if mouse_click:
+                run = False
+            mouse_click = False
+
+        # -------Volver a menu------#
+        if ButtonExit.collidepoint((cursor_x, cursor_y)):
+            if mouse_click:
+                run = False
+            mouse_click = False
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    mouse_click = True
+
+        screen.blit(Backgrounds[0], [0, 0])
+        # -------------------------texto principal------------------------#
+        draw_Final_screens("Game Over", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)),
+                           450, 300)
+        # pygame.draw.rect(screen, (255, 0, 0), ButtonExit)
+        screen.blit(Button_pequeno, (375, 640))
+        # pygame.draw.rect(screen, (255, 0, 0), Button_play_again)
+        screen.blit(Button_grande, (300, 550))
+        draw_complementos("Exit", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 453, 653)
+        draw_complementos("Play Again", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 455,
+                          565)
+
+        pygame.display.update()
+
+
 
 def Best_Score_Screen():
 
@@ -429,10 +528,10 @@ def level(nivel):
         screen.blit(Backgrounds[Niveles], [0, 0])
         #----------draw------------#
         for i in cubos:
-            screen.blit(hearth_2,(i[0].x,i[0].y))
+            screen.blit(Asteroid ,(i[0].x,i[0].y))
             #pygame.draw.rect(screen,(255,255,255),i[0])
         #pygame.draw.rect(screen,(0,255,0),player)
-        screen.blit(princesa,(player.x,player.y))
+        screen.blit(SpaceShip,(player.x,player.y))
 
         #----------draw------------#   
         #pygame.draw.rect(screen, (255, 255, 255), BarraSuperior)
@@ -470,9 +569,10 @@ def level(nivel):
     print(score)
     if victory:
          print ("victory_screen()")
+       #  Victory_screen()
     else:
         print("end_screen()")
-
+        End_Screen()
 
 menu()
 
