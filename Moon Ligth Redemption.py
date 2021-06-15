@@ -13,7 +13,7 @@ clock = pygame.time.Clock()
 #bg = pygame.image.load("Imagenes/Background.jpg").convert()
 lives = 3
 score = 0
-
+pause = False
 Niveles = 0
 
 #-------------------------------------------imgaes----------------------------------#
@@ -407,7 +407,7 @@ def Best_Score_Screen():
 
 
 def level(nivel):
-    global lives,score
+    global lives,score, pause
 
     def create_cubes(cubos,nivel):
         for i in range(5*nivel):
@@ -485,6 +485,7 @@ def level(nivel):
     time = 60
     victory = False
     cubos = []
+    exit = False
     create_cubes(cubos, nivel)
 
     while not levels:
@@ -496,6 +497,16 @@ def level(nivel):
             if mouse_click:
                 print("Exit")
                 levels = True
+                exit = True
+        if Sound.collidepoint((cursor_x,cursor_y)):
+            if mouse_click:
+                print(pause)
+                if not pause:
+                    pygame.mixer.music.pause()
+                    pause = True
+                else:
+                    pygame.mixer.music.unpause()
+                    pause = False
         mouse_click = False
 
         for event in pygame.event.get():
@@ -539,7 +550,7 @@ def level(nivel):
         screen.blit(SpaceShip,(player.x,player.y))
 
         #----------draw------------#   
-        #pygame.draw.rect(screen, (255, 255, 255), BarraSuperior)
+        #pygame.draw.rect(screen, (255, 255, 255), Sound)
         #pygame.draw.rect(screen, (255, 0, 0), ButtonExit)
         screen.blit(Button_pequeno, (450-130//2,2))
         draw_complementos("Exit", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 460, 15)
@@ -572,12 +583,13 @@ def level(nivel):
                 victory = True
                 levels = True
     print(score)
-    if victory:
-         print ("victory_screen()")
-       #  Victory_screen()
-    else:
-        print("end_screen()")
-        End_Screen()
+    if not exit:
+        if victory:
+            print ("victory_screen()")
+        #  Victory_screen()
+        else:
+            print("end_screen()")
+            End_Screen()
 
 menu()
 
