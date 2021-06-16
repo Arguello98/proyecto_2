@@ -16,6 +16,7 @@ score = 0
 pause = False
 Niveles = 0
 
+lista_canciones = ["01.mp3", "02.mp3", "03.mp3"]
 #-------------------------------------------imgaes----------------------------------#
 Asteroid = pygame.transform.scale(
     pygame.image.load(
@@ -323,7 +324,6 @@ def Victory_screen():
 
         pygame.display.update()
 
-
 def End_Screen():
     ButtonExit = pygame.Rect(450 - 130 // 2, 650, 130, 40)
     Button_play_again = pygame.Rect(450 - 300 // 2, 550, 300, 50)
@@ -369,8 +369,6 @@ def End_Screen():
 
         pygame.display.update()
 
-
-
 def Best_Score_Screen():
 
     ButtonExit = pygame.Rect(450 - 130 // 2, 650, 130, 40)
@@ -406,12 +404,10 @@ def Best_Score_Screen():
         pygame.display.update()
 
 
-
-
-
 def level(nivel):
     global lives,score, pause
-
+    pygame.mixer.music.load(lista_canciones[nivel-1])
+    pygame.mixer.music.play(-1,0,0)
     def create_cubes(cubos,nivel):
         for i in range(5*nivel):
             temporal = pygame.Rect(random.randint(10, 800),random.randint(100,500),40,40)
@@ -587,10 +583,14 @@ def level(nivel):
 
                 cubos = []
                 create_cubes(cubos, nivel)
+                pygame.mixer.music.load(lista_canciones[nivel-1])
+                pygame.mixer.music.play(-1,0,0)
             else:
                 victory = True
                 levels = True
     print(score)
+    pygame.mixer.music.load("Sneaky Driver.mp3")
+    pygame.mixer.music.play(-1,0,0)
     if not exit:
         if victory:
             print ("victory_screen()")
