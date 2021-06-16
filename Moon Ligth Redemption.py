@@ -432,15 +432,19 @@ def level(nivel):
             if i[0].x <= 0:
                 i[1] = random.randint(1,5)
                 i[2] = random.randint(-5,5)
+                HIT_SOUND.play()
             if i[0].x +i[1] +50 >=900:
                 i[1] = random.randint(1,5) * -1
                 i[2] = random.randint(-5,5)
+                HIT_SOUND.play()
             if i[0].y <= 50:
                 i[2]= random.randint(1,5)
                 i[1] = random.randint(-5,5)
+                HIT_SOUND.play()
             if i[0].y+ i[2]+ 50>=640:
                 i[2]= random.randint(1,5)*-1
                 i[1] = random.randint(-5,5)
+                HIT_SOUND.play()
             else:
                 i[0].x += i[1]
                 i[0].y += i[2]
