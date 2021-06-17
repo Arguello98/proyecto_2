@@ -74,6 +74,30 @@ def draw_Final_screens (txt, color, x, y, font = Font_final_screens):
     text_obj = font.render(txt, 1, color)
     screen.blit(text_obj, (x - text_obj.get_width() // 2, y))
 
+#-------------------------------------text reading----------------------------------#
+def creating_leaderboard_2(lista):
+    resultado = []
+    for i in lista:
+        name= ""
+        score = ""
+        separation = False
+        for j in i:
+            if j == ",":
+                separation = True
+            elif separation:
+                score += j
+            elif not separation:
+                name += j
+        resultado += [[int(score[:-1]),name]]
+    print (resultado)
+
+
+f = open("leaderboard.txt","rt")
+temporal_list = f.readlines() #creates a list of the different places
+creating_leaderboard_2(temporal_list)
+f.close()
+#------------
+
 
 def menu():
 
