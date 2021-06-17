@@ -9,6 +9,7 @@ pygame.display.set_caption("Moon light Redemption")
 clock = pygame.time.Clock()
 
 # se configura el bg dentro de la pantalla de juego
+lista_musica = ["01.mp3","02.mp3","03.mp3"]
 
 #bg = pygame.image.load("Imagenes/Background.jpg").convert()
 lives = 3
@@ -92,11 +93,11 @@ def menu():
     mouse_click = False
     User = " "
     active = False
+    Niveles = 1
 
     #--------ciclo logico----------------------------------#
 
     while True:
-        Niveles = 0
         lives = 3
         score = 0
         clock.tick(60)
@@ -111,23 +112,22 @@ def menu():
         if button_play.collidepoint((cursor_x, cursor_y)):
             if mouse_click and User != " ":
                 print("Historia :v")
-                Niveles = 1
                 level(Niveles)
         if button_Easy.collidepoint((cursor_x, cursor_y)):
             if mouse_click and User != " ":
                 print("Level Easy")
                 Niveles = 1
-                level(Niveles)
+                #level(Niveles)
         if button_Medium.collidepoint((cursor_x, cursor_y)):
             if mouse_click and User != " ":
                 print("Level Madium")
                 Niveles = 2
-                level(Niveles)
+                #level(Niveles)
         if button_Hard.collidepoint((cursor_x, cursor_y)):
             if mouse_click and User != " ":
                 print("Level Hard")
                 Niveles = 3
-                level(Niveles)
+                #level(Niveles)
         if button_Credits.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
                 print("Credits")
@@ -176,7 +176,7 @@ def menu():
         #-----------------drwaw--------------------------#
 
 
-        screen.blit(Backgrounds[Niveles], [0, 0])
+        screen.blit(Backgrounds[0], [0, 0])
         #-------------------------texto principal------------------------#
         draw_text("Moon light Redemption",(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
         450,50)
@@ -334,7 +334,6 @@ def Victory_screen():
 
         pygame.display.update()
 
-
 def End_Screen():
     Button_play_again = pygame.Rect(450 - 300 // 2, 550, 300, 50)
     mouse_click = False
@@ -369,8 +368,6 @@ def End_Screen():
                           565)
 
         pygame.display.update()
-
-
 
 def Best_Score_Screen():
 
@@ -407,11 +404,11 @@ def Best_Score_Screen():
         pygame.display.update()
 
 
-
-
-
 def level(nivel):
     global lives,score, pause
+
+    pygame.mixer.music.load(lista_musica[nivel-1])
+    pygame.mixer.music.play(-1,0,0)
 
     def create_cubes(cubos,nivel):
         for i in range(5*nivel):
@@ -585,7 +582,8 @@ def level(nivel):
                 timer = 0
                 invincibility = True
                 timer_2 = 0
-
+                pygame.mixer.music.load(lista_musica[nivel-1])
+                pygame.mixer.music.play(-1,0,0)
                 cubos = []
                 create_cubes(cubos, nivel)
             else:
@@ -599,6 +597,9 @@ def level(nivel):
         else:
             print("end_screen()")
             End_Screen()
+    
+    pygame.mixer.music.load("Sneaky Driver.mp3")
+    pygame.mixer.music.play(-1,0,0)
 
 menu()
 
