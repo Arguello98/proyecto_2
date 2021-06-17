@@ -211,9 +211,18 @@ def menu():
         draw_complementos("Best Score", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 900 // 2,463)
         draw_complementos("Instructions", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 290, 615)
         draw_complementos("Credits", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)),610, 615)
-        draw_botones("Easy",  (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 225, 315)
-        draw_botones("Medium", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 450, 315)
-        draw_botones("Hard", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 675, 315)
+        if Niveles == 1:
+            draw_botones("Easy",  (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 225, 315)
+            draw_botones("Medium", (0,0,0), 450, 315)
+            draw_botones("Hard", (0,0,0), 675, 315)
+        if Niveles == 2:
+            draw_botones("Easy",   (0,0,0), 225, 315)
+            draw_botones("Medium", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 450, 315)
+            draw_botones("Hard", (0,0,0), 675, 315)
+        if Niveles == 3:
+            draw_botones("Easy",  (0,0,0), 225, 315)
+            draw_botones("Medium", (0,0,0), 450, 315)
+            draw_botones("Hard", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 675, 315)
 
         pygame.display.update()
 
