@@ -16,7 +16,6 @@ score = 0
 pause = False
 Niveles = 0
 
-lista_canciones = ["01.mp3", "02.mp3", "03.mp3"]
 #-------------------------------------------imgaes----------------------------------#
 Asteroid = pygame.transform.scale(
     pygame.image.load(
@@ -77,7 +76,8 @@ def draw_Final_screens (txt, color, x, y, font = Font_final_screens):
 
 def menu():
 
-    global Niveles, lives, score
+    global Niveles, lives, score, pause
+
     Textbox = pygame.Rect(450+10,150, 300, 50)
     button_play = pygame.Rect(450-300//2,375,300,50)
     Button_Score = pygame.Rect(450-300//2,450,300,50)
@@ -87,6 +87,7 @@ def menu():
     button_Instructions = pygame.Rect(450-300-10,600,300,50)
     button_Credits = pygame.Rect(450+10,600,300,50)
     clock = pygame.time.Clock()
+    Sound = pygame.Rect(15, 10, 30, 23)
 
     mouse_click = False
     User = " "
@@ -108,22 +109,22 @@ def menu():
         if mouse_click:
             active = False
         if button_play.collidepoint((cursor_x, cursor_y)):
-            if mouse_click:
+            if mouse_click and User != " ":
                 print("Historia :v")
                 Niveles = 1
                 level(Niveles)
         if button_Easy.collidepoint((cursor_x, cursor_y)):
-            if mouse_click:
+            if mouse_click and User != " ":
                 print("Level Easy")
                 Niveles = 1
                 level(Niveles)
         if button_Medium.collidepoint((cursor_x, cursor_y)):
-            if mouse_click:
+            if mouse_click and User != " ":
                 print("Level Madium")
                 Niveles = 2
                 level(Niveles)
         if button_Hard.collidepoint((cursor_x, cursor_y)):
-            if mouse_click:
+            if mouse_click and User != " ":
                 print("Level Hard")
                 Niveles = 3
                 level(Niveles)
@@ -150,15 +151,27 @@ def menu():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     mouse_click = True
+
             if event.type == pygame.KEYDOWN:
                 if active == True:
                     if event.key == pygame.K_BACKSPACE:
                         User = User[:-1]
                     elif len(User) < 10:
                         User += event.unicode
+
+            if Sound.collidepoint((cursor_x, cursor_y)):
+                if mouse_click:
+                    print(pause)
+                    if not pause:
+                        pygame.mixer.music.pause()
+                        pause = True
+                    else:
+                        pygame.mixer.music.unpause()
+                        pause = False
 
         #-----------------drwaw--------------------------#
 
@@ -184,13 +197,14 @@ def menu():
         screen.blit(Button_grande, [450-300-10, 600])
         #pygame.draw.rect(screen, (255, 0, 0), button_Credits)
         screen.blit(Button_grande, (450 + 10, 600))
-        if active:
-            pygame.draw.rect(screen, (255, 255, 255), Textbox)
-        else:
-            pygame.draw.rect(screen, (255, 0, 0), Textbox)
+        Linea_txt = pygame.draw.line(screen, (255,255,255), (460,190), (760,190), 4)
+
 
             #Texto escrito por el usuario
-        draw_text(User, (0,0,0), 600,160 , label_font)
+        draw_text(User, (255,255,255), 600,160 , label_font)
+
+        # pygame.draw.rect(screen,(255,255,255), Sound)
+        screen.blit(Icono_sonido, (15, 10))
 
         # -------------------Texto de los botones------------------------#
         draw_complementos("Play", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 900 // 2,387)
@@ -276,13 +290,18 @@ def Instructions():
         450,50)
         #pygame.draw.rect(screen, (255, 0, 0), ButtonExit)
         screen.blit(Button_pequeno, (375, 640))
+        draw_complementos("Welcome to Moon Light Redemption", (255, 255, 255), 450, 200)
+        draw_complementos("It passes through the two most important cities", (255, 255, 255), 450, 250)
+        draw_complementos("cities protected by a meteor shower", (255, 255, 255), 450, 300)
+        draw_complementos("Be careful", (255, 255, 255), 450, 350)
+        draw_complementos("To use your ship use the movement keys", (255, 255, 255), 450, 400)
+        draw_complementos("Get to the moon and become the winner", (255, 255, 255), 450, 450)
+        draw_complementos("", (255, 255, 255), 450, 450)
         draw_complementos("Exit", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 453, 653)
 
         pygame.display.update()
 
 def Victory_screen():
-
-    ButtonExit = pygame.Rect(450 - 130 // 2, 650, 130, 40)
     Button_play_again = pygame.Rect(450 - 300 // 2, 550, 300, 50)
     mouse_click = False
     run = True
@@ -292,12 +311,6 @@ def Victory_screen():
 
         # ---------Jugar de nuevo--------#
         if Button_play_again.collidepoint((cursor_x, cursor_y)):
-            if mouse_click:
-                run = False
-            mouse_click = False
-
-        #-------Volver a menu------#
-        if ButtonExit.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
                 run = False
             mouse_click = False
@@ -315,17 +328,14 @@ def Victory_screen():
         #-------------------------texto principal------------------------#
         draw_Final_screens("Victory for you",(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
         450,300)
-        #pygame.draw.rect(screen, (255, 0, 0), ButtonExit)
-        screen.blit(Button_pequeno, (375, 640))
         #pygame.draw.rect(screen, (255, 0, 0), Button_play_again)
         screen.blit(Button_grande, (300, 550))
-        draw_complementos("Exit", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 453, 653)
         draw_complementos("Play Again", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 455, 565)
 
         pygame.display.update()
 
+
 def End_Screen():
-    ButtonExit = pygame.Rect(450 - 130 // 2, 650, 130, 40)
     Button_play_again = pygame.Rect(450 - 300 // 2, 550, 300, 50)
     mouse_click = False
 
@@ -337,12 +347,6 @@ def End_Screen():
 
         # ---------Jugar de nuevo--------#
         if Button_play_again.collidepoint((cursor_x, cursor_y)):
-            if mouse_click:
-                run = False
-            mouse_click = False
-
-        # -------Volver a menu------#
-        if ButtonExit.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
                 run = False
             mouse_click = False
@@ -359,15 +363,14 @@ def End_Screen():
         # -------------------------texto principal------------------------#
         draw_Final_screens("Game Over", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)),
                            450, 300)
-        # pygame.draw.rect(screen, (255, 0, 0), ButtonExit)
-        screen.blit(Button_pequeno, (375, 640))
         # pygame.draw.rect(screen, (255, 0, 0), Button_play_again)
         screen.blit(Button_grande, (300, 550))
-        draw_complementos("Exit", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 453, 653)
         draw_complementos("Play Again", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 455,
                           565)
 
         pygame.display.update()
+
+
 
 def Best_Score_Screen():
 
@@ -404,10 +407,12 @@ def Best_Score_Screen():
         pygame.display.update()
 
 
+
+
+
 def level(nivel):
     global lives,score, pause
-    pygame.mixer.music.load(lista_canciones[nivel-1])
-    pygame.mixer.music.play(-1,0,0)
+
     def create_cubes(cubos,nivel):
         for i in range(5*nivel):
             temporal = pygame.Rect(random.randint(10, 800),random.randint(100,500),40,40)
@@ -583,14 +588,10 @@ def level(nivel):
 
                 cubos = []
                 create_cubes(cubos, nivel)
-                pygame.mixer.music.load(lista_canciones[nivel-1])
-                pygame.mixer.music.play(-1,0,0)
             else:
                 victory = True
                 levels = True
     print(score)
-    pygame.mixer.music.load("Sneaky Driver.mp3")
-    pygame.mixer.music.play(-1,0,0)
     if not exit:
         if victory:
             print ("victory_screen()")
