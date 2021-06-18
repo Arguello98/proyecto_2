@@ -1,7 +1,7 @@
 Daniel,168
+ddd,82
 ddddd,70
+marin,25
+isac,20
 D,12
 A,11
-N,10
-isac,72
-I,98

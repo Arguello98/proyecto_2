@@ -16,8 +16,8 @@ lives = 3
 score = 0
 pause = False
 Niveles = 0
-
-#-------------------------------------------imgaes----------------------------------#
+User = ""
+#-------------------------------------------imgaes-------------------------------------------------------------------#
 Asteroid = pygame.transform.scale(
     pygame.image.load(
         os.path.join("Imagenes/Asteroide.png")
@@ -40,7 +40,7 @@ Icono_vida  = pygame.image.load("Imagenes/Icono_vida.png")
 Icono_sonido = pygame.image.load("Imagenes/Icono_Sonido.png")
 Backgrounds = [BgMenu, BgL1, Bgl2, BgL3]
 
-#---------------------------music-----------------------------#
+#---------------------------music------------------------------------------------------------------------------------#
 pygame.mixer.music.load("Sneaky Driver.mp3")
 pygame.mixer.music.play(-1,0,0)
 
@@ -88,20 +88,39 @@ def creating_leaderboard_2(lista):
                 score += j
             elif not separation:
                 name += j
-        resultado += [[int(score[:-1]),name]]
-    print (resultado)
+        resultado += [[name,int(score[:-1])]]
+    return resultado
+def dividir_lista(lista):
+    pivote = lista[0]
+    lista_menor = []
+    lista_mayor = []
 
+    for i in range(1, len(lista)):
+        if lista[i][1] < pivote[1]:
+            lista_menor.append(lista[i])
+        else:
+            lista_mayor.append(lista[i])
+    return lista_menor, pivote, lista_mayor
+
+def quicksort(lista):
+    if lista == []:
+        return lista
+    lista_menor, pivote, lista_mayor = dividir_lista(lista)
+    return quicksort(lista_menor) + [pivote] + quicksort(lista_mayor)
 
 f = open("leaderboard.txt","rt")
-temporal_list = f.readlines() #creates a list of the different places
-creating_leaderboard_2(temporal_list)
+leaderboard = f.readlines() #creates a list of the different places
+leaderboard = creating_leaderboard_2(leaderboard)
+leaderboard = quicksort(leaderboard)
+print (leaderboard)
 f.close()
-#------------
 
 
+
+#--------------------------------------------------------------------------------------------------#
 def menu():
 
-    global Niveles, lives, score, pause
+    global Niveles, lives, score, pause, User
 
     Textbox = pygame.Rect(450+10,150, 300, 50)
     button_play = pygame.Rect(450-300//2,375,300,50)
@@ -115,7 +134,6 @@ def menu():
     Sound = pygame.Rect(15, 10, 30, 23)
 
     mouse_click = False
-    User = " "
     active = False
     Niveles = 1
 
@@ -134,21 +152,22 @@ def menu():
         if mouse_click:
             active = False
         if button_play.collidepoint((cursor_x, cursor_y)):
-            if mouse_click and User != " ":
+            if mouse_click and User != "":
                 print("Historia :v")
                 level(Niveles)
+                User = ""
         if button_Easy.collidepoint((cursor_x, cursor_y)):
-            if mouse_click and User != " ":
+            if mouse_click:
                 print("Level Easy")
                 Niveles = 1
                 #level(Niveles)
         if button_Medium.collidepoint((cursor_x, cursor_y)):
-            if mouse_click and User != " ":
+            if mouse_click:
                 print("Level Madium")
                 Niveles = 2
                 #level(Niveles)
         if button_Hard.collidepoint((cursor_x, cursor_y)):
-            if mouse_click and User != " ":
+            if mouse_click:
                 print("Level Hard")
                 Niveles = 3
                 #level(Niveles)
@@ -255,7 +274,8 @@ def Creditos():
 
     ButtonExit = pygame.Rect(450 - 130 // 2, 650, 130, 40)
     mouse_click = False
-    while True:
+    run = True
+    while run:
         clock.tick(60)
         cursor_x, cursor_y = pygame.mouse.get_pos()
 
@@ -264,7 +284,7 @@ def Creditos():
         if ButtonExit.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
                 print("Exit")
-                menu()
+                run  = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -298,7 +318,8 @@ def Instructions():
     ButtonExit = pygame.Rect(450 - 130 // 2, 650, 130, 40)
     mouse_click = False
 
-    while True:
+    run = True
+    while run:
         clock.tick(60)
         cursor_x, cursor_y = pygame.mouse.get_pos()
 
@@ -307,7 +328,7 @@ def Instructions():
         if ButtonExit.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
                 print("Exit")
-                menu()
+                run = False
             mouse_click = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -368,9 +389,16 @@ def Victory_screen():
         pygame.display.update()
 
 def End_Screen():
+    global User, score,leaderboard
+    leaderboard.append([User,score])
+    leaderboard = quicksort(leaderboard)
     Button_play_again = pygame.Rect(450 - 300 // 2, 550, 300, 50)
     mouse_click = False
 
+    f = open("leaderboard.txt","w")
+    for i in range(7):
+        f.write(leaderboard[-i-1][0] + "," + str(leaderboard[-1-i][1]) + "\n")
+    f.close()
     run = True
 
     while run:
@@ -407,7 +435,8 @@ def Best_Score_Screen():
     ButtonExit = pygame.Rect(450 - 130 // 2, 650, 130, 40)
     mouse_click = False
 
-    while True:
+    run = True
+    while run:
         clock.tick(60)
         cursor_x, cursor_y = pygame.mouse.get_pos()
 
@@ -416,7 +445,7 @@ def Best_Score_Screen():
         if ButtonExit.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
                 print("Exit")
-                menu()
+                run = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -430,12 +459,18 @@ def Best_Score_Screen():
         #-------------------------texto principal------------------------#
         draw_text("Best Scores",(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
         450,50)
-        #pygame.draw.rect(screen, (255, 0, 0), ButtonExit)
+        i = 140
+        position = -1
+        while i <= 500:
+            draw_text(leaderboard[position][0] ,(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 300, i)
+            draw_text(str(leaderboard[position][1]),(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 600, i)
+            i += 60
+            position -= 1
+
         screen.blit(Button_pequeno, (375, 640))
         draw_complementos("Exit", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 453, 653)
 
         pygame.display.update()
-
 
 def level(nivel):
     global lives,score, pause
