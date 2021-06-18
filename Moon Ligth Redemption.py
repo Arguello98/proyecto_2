@@ -16,6 +16,7 @@ lives = 3
 score = 0
 pause = False
 Niveles = 0
+User = " "
 
 #-------------------------------------------imgaes----------------------------------#
 Asteroid = pygame.transform.scale(
@@ -77,7 +78,7 @@ def draw_Final_screens (txt, color, x, y, font = Font_final_screens):
 
 def menu():
 
-    global Niveles, lives, score, pause
+    global Niveles, lives, score, pause, User
 
     Textbox = pygame.Rect(450+10,150, 300, 50)
     button_play = pygame.Rect(450-300//2,375,300,50)
@@ -91,7 +92,6 @@ def menu():
     Sound = pygame.Rect(15, 10, 30, 23)
 
     mouse_click = False
-    User = " "
     active = False
     Niveles = 1
 
@@ -143,6 +143,7 @@ def menu():
         if Textbox.collidepoint((cursor_x, cursor_y)):
             if mouse_click:
                 active = True
+                print()
         mouse_click = False
 
         #----------eventos--------------------------------#
@@ -249,7 +250,6 @@ def Creditos():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     mouse_click = True
-
         screen.blit(Backgrounds[0], [0, 0])
         #-------------------------texto principal------------------------#
         draw_text("Credits",(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
@@ -414,7 +414,7 @@ def Best_Score_Screen():
 
 
 def level(nivel):
-    global lives,score, pause
+    global lives,score, pause, User
 
     pygame.mixer.music.load(lista_musica[nivel-1])
     pygame.mixer.music.play(-1,0,0)
@@ -490,6 +490,7 @@ def level(nivel):
     LabelScore = Fuente_complementaria.render("SCORE:", 0, (0, 0, 0))
     LabelTime = Fuente_complementaria.render("TIME:", 0, (0, 0, 0))
     LabelLives = Fuente_complementaria.render("LIVES:", 0, (0, 0, 0))
+    LabelPlayer = Fuente_complementaria.render("Player: " + User, 0, (0,0,0))
     Sound = pygame.Rect(15,10, 30,23)
 
     levels = False
@@ -572,11 +573,12 @@ def level(nivel):
 
         #pygame.draw.rect(screen,(255,255,255), Sound)
         screen.blit(Icono_sonido, (15,10))
-        draw_text(str(time),(0,0,0),450 + 40,665,Fuente_complementaria)      
-        draw_text(str(score),(0,0,0),450 - 150 // 2 -75,665,Fuente_complementaria)
-        screen.blit(LabelScore, (450 - 150 // 2 - 150 - 75, 665))
-        screen.blit(LabelTime, (450 - 150 // 2, 665))
+        draw_text(str(time),(0,0,0),550,665,Fuente_complementaria)
+        draw_text(str(score),(0,0,0),400,665,Fuente_complementaria)
+        screen.blit(LabelScore, (275- 10, 665))
+        screen.blit(LabelTime, (440, 665))
         screen.blit(LabelLives, (600, 665))
+        screen.blit(LabelPlayer, (25, 665))
         for i in range(lives):
             screen.blit(Icono_vida,(hearth_position[i],650))
 
