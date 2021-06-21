@@ -537,66 +537,70 @@ def Best_Score_Screen():
 def level(nivel):
     global lives,score, pause, User
 
-    pygame.mixer.music.load(lista_musica[nivel-1])
-    pygame.mixer.music.play(-1,0,0)
+    #musica dependiendo del nivel
+    pygame.mixer.music.load(lista_musica[nivel-1]) #carga la cancion
+    pygame.mixer.music.play(-1,0,0) #reproduce la cancion en forma de loop
 
+    #creacion de los enemigos dependiendo del nivel
     def create_cubes(cubos,nivel):
-        for i in range(5*nivel):
-            temporal = pygame.Rect(random.randint(10, 800),random.randint(100,500),40,40)
-            if random.randint(-5,5) > 0:
-                direccion_x = -1
+        for i in range(5*nivel): #por nmivel de dificultad crea un enemigo
+            temporal = pygame.Rect(random.randint(10, 800),random.randint(100,500),40,40) #crea un rectangulo que sera el hitbox del enemigo
+            if random.randint(-5,5) > 0: #dependiendo de si el numero es mayor o menor se define la direccion en la cual se va a mover
+                direccion_x = -1 #se mueve hacia la izquierda
             else:
-                direccion_x = 1
-            if random.randint(-5,5)>0:
-                direccion_y = -1
+                direccion_x = 1 #se mueve hacia la derecha
+            if random.randint(-5,5)>0: # dependiendo del si el numero es positivo o negativo define la direccion en la cual se va a mvoer
+                direccion_y = -1 # se mueve hacia arriba
             else:
-                direccion_y = 1
-            vel_temporal_1 = random.randint(1,5)*  direccion_x
-            vel_temporal_2 = random.randint(1,5)*  direccion_y
-            cubos +=[[temporal,vel_temporal_1,vel_temporal_2]]
+                direccion_y = 1 #se mueve hacia abajo
+            vel_temporal_1 = random.randint(1,5)*  direccion_x #se define una velicdad para el enemigo en el eje x
+            vel_temporal_2 = random.randint(1,5)*  direccion_y #se define una velocidad para el enemigo en el eje  y
+            cubos +=[[temporal,vel_temporal_1,vel_temporal_2]] # se añade el hitbox asi com su velocidad en x y y  a la lista de enemigos
     
-    def movimiento_cubos(lista):
-        for i in lista:
-            if i[0].x <= 0:
-                i[1] = random.randint(1,5)
-                i[2] = random.randint(-5,5)
-                HIT_SOUND.play()
-            if i[0].x +i[1] +50 >=900:
-                i[1] = random.randint(1,5) * -1
-                i[2] = random.randint(-5,5)
-                HIT_SOUND.play()
-            if i[0].y <= 50:
-                i[2]= random.randint(1,5)
-                i[1] = random.randint(-5,5)
-                HIT_SOUND.play()
-            if i[0].y+ i[2]+ 50>=640:
-                i[2]= random.randint(1,5)*-1
-                i[1] = random.randint(-5,5)
-                HIT_SOUND.play()
-            else:
-                i[0].x += i[1]
-                i[0].y += i[2]
+    #movimiento de los enemigos, recibe la lista de enemigos
+    def movimiento_cubos(lista): 
+        for i in lista: #por cada elemento de la lista
+            if i[0].x <= 0: #si colisiona con el lado izquierdo pantalla
+                i[1] = random.randint(1,5) #se genera un numero para la velocidad en x que es positivo para que se mueve hacia la derecha
+                i[2] = random.randint(-5,5) #se genera un numero para la velocidad en el y que puede ser tanto positivo como negativo
+                HIT_SOUND.play() #se ejecuta el sonido de golpe
+            if i[0].x +i[1] +50 >=900: #si colisiona con el lado derecho de la pantalla
+                i[1] = random.randint(1,5) * -1 #se genera un numero aleatorio en el cual se movera hacia la izquierda 
+                i[2] = random.randint(-5,5) #se genera un numero aleatorio para la velocidad en y que puede ser tanto positivo como negativo
+                HIT_SOUND.play() #se ejecuta el sonido de golpe
+            if i[0].y <= 50: #en caso de que se colisiona con el lado superior de la pantalla
+                i[2]= random.randint(1,5) #se genera un numero para la velocidad en el eje y de la pantalla, para que se mueva hacia abajo
+                i[1] = random.randint(-5,5) #se genera un numero para la velocidad en x que puede ser tanto positivo como negativo
+                HIT_SOUND.play() #se ejetcuta el sonido del golpe
+            if i[0].y+ i[2]+ 50>=640: #en caso de que colisiona con el lado inferior de la pantalla
+                i[2]= random.randint(1,5)*-1 #se genera un numero negativo para la velocidad en y, para que se mueva hacia arriba
+                i[1] = random.randint(-5,5) #se genera un numero que puede ser tanto positivo como negativo para la velocidad en x
+                HIT_SOUND.play() #ejecuta el sonido del golpe
+            else:#en caso de que no colisione con ningun bor de la pantalla
+                i[0].x += i[1]  #al valor de x del hitbox se le suma la velocidad en x
+                i[0].y += i[2] #al valor de y del hitbox se le suma la volocidad en y
     
-    def player_move(keys_pressed):
-        VEL = 5
-        if keys_pressed[pygame.K_LEFT] and player.x - VEL > 0: #left
-            player.x -= VEL
-        if keys_pressed[pygame.K_RIGHT] and player.x +VEL + 50 < 900:#right
-            player.x += VEL
-        if keys_pressed[pygame.K_DOWN] and player.y + VEL + 50 < 640:#right
-            player.y += VEL
-        if keys_pressed[pygame.K_UP] and player.y - VEL > 50:#right
-            player.y -= VEL
+    #el movimiento de la nave del jugador
+    def player_move(keys_pressed): #recibe la tecla presionada por el jugador
+        VEL = 5 #se define una velocidad a la cual se va a mover la nave
+        if keys_pressed[pygame.K_LEFT] and player.x - VEL > 0: #si se presiona el boton izuqierdo y no se sale del limite 
+            player.x -= VEL #se mueve hacia la izquierda
+        if keys_pressed[pygame.K_RIGHT] and player.x +VEL + 50 < 900:#si se presiona el boton de la derecha y no se sale del limite 
+            player.x += VEL #se mueve hacia la derecha
+        if keys_pressed[pygame.K_DOWN] and player.y + VEL + 50 < 640:#si se presiona el boton de abajo y no se sale del limite 
+            player.y += VEL #se mueve hacia abajo
+        if keys_pressed[pygame.K_UP] and player.y - VEL > 50:#rsi se presiona el boton de arriba y no se sale del limite 
+            player.y -= VEL #se mueve hacia arriba
 
-    def collision_check(lista,invincibility):
-        global lives
-        for i in lista:
-            if player.colliderect(i[0]) and not invincibility:
-                cubos.remove(i)
-                HIT_SOUND.play()
-                lives -= 1
-                print(lives)
-
+    #verifica la colision de los enemigos con el jugador
+    def collision_check(lista,invincibility): #recibe la lista de enemigos y una variable para saber si el jugador puede recibir daño
+        global lives #llama la varriable de vidas
+        for i in lista: #por cada elemento de la lista
+            if player.colliderect(i[0]) and not invincibility: #si el jugador colisiona con el enemigo y puede recibir daño
+                cubos.remove(i) #remueve el enemigo de la lista de enemigos
+                HIT_SOUND.play() #reproduce el sonido de golpe
+                lives -= 1 #disminye el valor de vidas en 1 
+    
     player = pygame.Rect(450,450,50,50)
     clock = pygame.time.Clock()
 
