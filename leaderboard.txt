@@ -2,6 +2,6 @@ Daniel,168
 Pruebas,135
 Pruebas 3,110
 barboza,105
-nuevo scor,95
 Digame ,95
+nuevo scor,95
 ddd,82
