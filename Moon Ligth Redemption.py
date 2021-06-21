@@ -90,6 +90,8 @@ def creating_leaderboard_2(lista):
                 name += j
         resultado += [[name,int(score[:-1])]]
     return resultado
+
+#-----------hijo de isac----------------------------------------------------------------------------------#
 def dividir_lista(lista):
     pivote = lista[0]
     lista_menor = []
@@ -356,6 +358,33 @@ def Instructions():
         pygame.display.update()
 
 def Victory_screen():
+    global User, score,leaderboard
+    
+    leaderboard.append([User,score])
+    leaderboard = quicksort(leaderboard)
+    Button_play_again = pygame.Rect(450 - 300 // 2, 550, 300, 50)
+    mouse_click = False
+
+    f = open("leaderboard.txt","w")
+    for i in range(7):
+        f.write(leaderboard[-i-1][0] + "," + str(leaderboard[-1-i][1]) + "\n")
+    f.close()
+    
+    posicion = 0
+    print(leaderboard)
+    while posicion < len(leaderboard):
+        if [User,score] == leaderboard[-posicion-1]:
+            print("hola")
+            posicion +=1
+            break
+        else:
+            posicion += 1
+
+    print(posicion)
+    high_score = False
+    if posicion < 8:
+        high_score = True
+
     Button_play_again = pygame.Rect(450 - 300 // 2, 550, 300, 50)
     mouse_click = False
     run = True
@@ -381,8 +410,15 @@ def Victory_screen():
         screen.blit(Backgrounds[0], [0, 0])
         #-------------------------texto principal------------------------#
         draw_Final_screens("Victory for you",(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
-        450,300)
-        #pygame.draw.rect(screen, (255, 0, 0), Button_play_again)
+        450,100)
+
+        if high_score:
+            draw_complementos("new high score", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)),
+            450,300)
+            draw_complementos("Position  " + str(posicion), (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)),
+            450,350)
+            draw_complementos("Score  " + str(score), (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)),
+            450,400)
         screen.blit(Button_grande, (300, 550))
         draw_complementos("Play Again", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 455, 565)
 
@@ -390,6 +426,7 @@ def Victory_screen():
 
 def End_Screen():
     global User, score,leaderboard
+    
     leaderboard.append([User,score])
     leaderboard = quicksort(leaderboard)
     Button_play_again = pygame.Rect(450 - 300 // 2, 550, 300, 50)
@@ -399,6 +436,21 @@ def End_Screen():
     for i in range(7):
         f.write(leaderboard[-i-1][0] + "," + str(leaderboard[-1-i][1]) + "\n")
     f.close()
+
+    posicion = 0
+    print(leaderboard)
+    while posicion < len(leaderboard):
+        if [User,score] == leaderboard[-posicion-1]:
+            print("hola")
+            posicion +=1
+            break
+        else:
+            posicion += 1
+
+    print(posicion)
+    high_score = False
+    if posicion < 8:
+        high_score = True
     run = True
 
     while run:
@@ -422,8 +474,15 @@ def End_Screen():
         screen.blit(Backgrounds[0], [0, 0])
         # -------------------------texto principal------------------------#
         draw_Final_screens("Game Over", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)),
-                           450, 300)
-        # pygame.draw.rect(screen, (255, 0, 0), Button_play_again)
+                           450, 100)
+        if high_score:
+            draw_complementos("new high score", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)),
+            450,300)
+            draw_complementos("Position  " + str(posicion), (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)),
+            450,350)
+            draw_complementos("Score  " + str(score), (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)),
+            450,400)
+        
         screen.blit(Button_grande, (300, 550))
         draw_complementos("Play Again", (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 455,
                           565)
