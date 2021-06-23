@@ -419,19 +419,19 @@ def Victory_screen():
     f.close() # Se cierra el txt
     
     posicion = 0
-    print(leaderboard)
-    while posicion < len(leaderboard):
-        if [User,score] == leaderboard[-posicion-1]:
-            #print("hola")
-            posicion +=1
-            break
-        else:
-            posicion += 1
+    #print(leaderboard)
+    #esta funcion verifica la posicion del usuario en la tabla de posiciones
+    while posicion < len(leaderboard): #mientras la posicion sea menor al largo de la tabla de posiciones
+        if [User,score] == leaderboard[-posicion-1]: #si el jugador esta en la tabla de posiciones
+            posicion +=1 #aumenta la posicion
+            break #sale del while
+        else: 
+            posicion += 1 #caso contrario aumenta posicion en 1 para seguir 
 
     #print(posicion)
-    high_score = False
-    if posicion < 8:
-        high_score = True
+    high_score = False #variable para saber si el jugador esta en el top 7
+    if posicion < 8: #si la posicion esta en el top 7
+        high_score = True #la variable se vuelve True par que se muestre en pantalla un mensaje de nueva mejor puntuacion
 
     Button_play_again = pygame.Rect(450 - 300 // 2, 550, 300, 50) #Rectangulo con el hitbox del boton "play again"
     mouse_click = False #El flag del mouse inicializa en flaso
@@ -492,19 +492,16 @@ def End_Screen():
     f.close()  # Se cierra el txt
 
     posicion = 0
-    print(leaderboard)
-    while posicion < len(leaderboard):
-        if [User,score] == leaderboard[-posicion-1]:
-            print("hola")
-            posicion +=1
-            break
-        else:
-            posicion += 1
+    while posicion < len(leaderboard): #mientras la posicion sea menor al largo de la tabla de posiciones
+        if [User,score] == leaderboard[-posicion-1]: #si el jugador esta en la tabla de posiciones
+            posicion +=1 #aumenta la posicion
+            break #sale del while
+        else: 
+            posicion += 1 #caso contrario aumenta posicion en 1 para seguir 
 
-    print(posicion)
-    high_score = False
-    if posicion < 8:
-        high_score = True
+    high_score = False #variable para saber si el jugador esta en el top 7
+    if posicion < 8: #si la posicion esta en el top 7
+        high_score = True #la variable se vuelve True par que se muestre en pantalla un mensaje de nueva mejor puntuacion
     run = True
 
     while run:
@@ -725,38 +722,38 @@ def level(nivel):
                     mouse_click = True
 
 
-        if timer >= 90:
-            timer = 90
-            invincibility = False
-        timer +=1
+        if timer >= 90: # temporizador para la invencibilidad del jugador
+            timer = 90 #dura 90mili seg
+            invincibility = False #si pasa el tiempo ya puede recibir daño
+        timer +=1 #aumenta el contador en 1
 
-        if timer_2 > 60:
-            timer_2 = 0
-            time -= 1
-            if nivel ==1:
-                score += 1
-            if nivel == 2:
-                score += 3
-            if nivel == 3:
-                score += 5
+        if timer_2 > 60: #si pasa un segundo
+            timer_2 = 0 #se reinicia el contador
+            time -= 1 #se reduce el tiempo en 1
+            if nivel ==1: #si el nivel es 1 
+                score += 1 #aumenta el score en 1 por segundo
+            if nivel == 2: #si el nivel es 2
+                score += 3 #el score aumenta en 3 por segundo
+            if nivel == 3: #si el nivel es 3
+                score += 5 #el score aumente en 5 por segundo
         timer_2 += 1
 
-        if lives == 0:
-            levels = True
+        if lives == 0: #si se acaban las vidas
+            levels = True #se sale del juego
 
         #------------------------move-----------------------#
-        keys_pressed = pygame.key.get_pressed()
-        player_move(keys_pressed)
-        movimiento_cubos(cubos)
-        collision_check(cubos, invincibility)
+        keys_pressed = pygame.key.get_pressed() #recibe las teclas presionadas
+        player_move(keys_pressed) #llama a la funcion de movimiento
+        movimiento_cubos(cubos) #mueve a los enemigos
+        collision_check(cubos, invincibility) #verifica la colision
 
         screen.blit(Backgrounds[Niveles], [0, 0]) # Backgrounds de la pantalla
         #----------draw------------#
-        for i in cubos:
-            screen.blit(Asteroid ,(i[0].x,i[0].y))
+        for i in cubos:  #en la lista de enemigos
+            screen.blit(Asteroid ,(i[0].x,i[0].y)) #dibuja el enemigo en pantalla
             #pygame.draw.rect(screen,(255,255,255),i[0])
         #pygame.draw.rect(screen,(0,255,0),player)
-        screen.blit(SpaceShip,(player.x,player.y))
+        screen.blit(SpaceShip,(player.x,player.y)) #dibuja el aliado
 
         #----------draw------------#   
         #pygame.draw.rect(screen, (255, 255, 255), Sound)
@@ -779,32 +776,32 @@ def level(nivel):
         pygame.display.update()
 
         #----------------level condition---------------------------#
-        if time == 0:
-            if nivel < 3:
-                nivel += 1
-                time = 60
-                lives = 3
-                timer = 0
-                invincibility = True
-                timer_2 = 0
-                pygame.mixer.music.load(lista_musica[nivel-1])
-                pygame.mixer.music.play(-1,0,0)
-                cubos = []
-                create_cubes(cubos, nivel)
+        if time == 0: #si el contador de tiempo llega a 0
+            if nivel < 3: #si el nivel es menor que 3
+                nivel += 1 #aumenta el nivel en 1
+                time = 60 #reinicia el contador
+                lives = 3 #reinicia la cantidad de vidas
+                timer = 0 #reinicia el timer 
+                invincibility = True #el jugador se vuelve invencible por medio segundo
+                timer_2 = 0 #reinicia el contador de invincibilidad
+                pygame.mixer.music.load(lista_musica[nivel-1]) #carga la siguiente cancion
+                pygame.mixer.music.play(-1,0,0) #reproduce la siguiente cancion
+                cubos = [] #reinicia la lista de enemigos
+                create_cubes(cubos, nivel) #llena la lista de enemigos 
             else:
-                victory = True
-                levels = True
+                victory = True #si se llego al nivel 3 se sale a la pantalla de victoria
+                levels = True #termina el juego
     print(score)
-    if not exit:
-        if victory:
+    if not exit: #si la persiona no nse salio
+        if victory: #entra en la pantalla de victoria
             print ("victory_screen()")
-        #  Victory_screen()
+            Victory_screen() #llama la pantalla de victoria
         else:
             print("end_screen()")
-            End_Screen()
+            End_Screen() #llama a la pantalla de derrota
     
-    pygame.mixer.music.load("Sneaky Driver.mp3")
-    pygame.mixer.music.play(-1,0,0)
+    pygame.mixer.music.load("Sneaky Driver.mp3")#carga la musica de la pantalla de inicio
+    pygame.mixer.music.play(-1,0,0) #reproduce la cancion
 
 menu()
 
